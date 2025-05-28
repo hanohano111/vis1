@@ -1,0 +1,11 @@
+{
+  "dependencies" : [
+
+  ],
+  "module" : {
+    "moduleName" : "RealityKitContent",
+    "swiftFiles" : [
+      "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/Sources/RealityKitContent/RealityKitContent.swift"
+    ]
+  }
+}

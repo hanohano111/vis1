@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>top-level-items</key>
+	<array>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>22</string>
+					<key>EndingLineNumber</key>
+					<string>29</string>
+					<key>StartingColumnNumber</key>
+					<string>1</string>
+					<key>StartingLineNumber</key>
+					<string>29</string>
+					<key>Timestamp</key>
+					<string>766999202.110805</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Protein3DViewer/Protein/AtomElement.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>   case cobalt = "Co"</string>
+				<key>leading</key>
+				<string>    case manganese = "Mn"
+    case iron = "Fe"
+ </string>
+				<key>trailing</key>
+				<string>
+    case nickel = "Ni"
+    case copper = "Cu"
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>15</string>
+					<key>EndingLineNumber</key>
+					<string>157</string>
+					<key>StartingColumnNumber</key>
+					<string>14</string>
+					<key>StartingLineNumber</key>
+					<string>157</string>
+					<key>Timestamp</key>
+					<string>766999215.39018</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Protein3DViewer/Protein/AtomElement.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string> </string>
+				<key>leading</key>
+				<string>        .iron: 2.05,
+        .cobalt: 1.88,
+        .zinc:</string>
+				<key>trailing</key>
+				<string>1.39,
+        .copper: 1.40,
+        .bromine: 1.85,
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>22</string>
+					<key>EndingLineNumber</key>
+					<string>156</string>
+					<key>StartingColumnNumber</key>
+					<string>5</string>
+					<key>StartingLineNumber</key>
+					<string>156</string>
+					<key>Timestamp</key>
+					<string>766999235.97886</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Protein3DViewer/Protein/AtomElement.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>   .cobalt: 1.88,</string>
+				<key>leading</key>
+				<string>        .calcium: 2.31,
+        .iron: 2.05,
+     </string>
+				<key>trailing</key>
+				<string>
+        .zinc: 1.39,
+        .copper: 1.40,
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>0</string>
+					<key>EndingLineNumber</key>
+					<string>972</string>
+					<key>StartingColumnNumber</key>
+					<string>0</string>
+					<key>StartingLineNumber</key>
+					<string>971</string>
+					<key>Timestamp</key>
+					<string>768716166.154688</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Protein3DViewer/ProteinViewer.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>            case "C": return 4  // 碳原子连四个键
+</string>
+				<key>leading</key>
+				<string>        func getMaxBonds(forElement element: String) -&gt; Int {
+            switch element.uppercased() {
+</string>
+				<key>trailing</key>
+				<string>            case "N": return 3  // 氮原子连三个键
+            case "O", "S": return 2  // 氧原子和硫原子连两个键
+            case "H": return 1  // 氢原子连一个键
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>0</string>
+					<key>EndingLineNumber</key>
+					<string>3158</string>
+					<key>StartingColumnNumber</key>
+					<string>0</string>
+					<key>StartingLineNumber</key>
+					<string>3157</string>
+					<key>Timestamp</key>
+					<string>768716166.154704</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Protein3DViewer/ProteinViewer.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>        }
+</string>
+				<key>leading</key>
+				<string>            color = UIColor(red: 0.2, green: 0.4, blue: 0.8, alpha: 1.0) // 蓝色
+            ribbonWidth = 0.04  // 增加loop宽度，从0.03增加到0.04
+</string>
+				<key>trailing</key>
+				<string>        
+        // 检查曲线是否足够长
+        if secondaryStructure == .helix &amp;&amp; curvePoints.count &lt; 8 {
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>0</string>
+					<key>EndingLineNumber</key>
+					<string>3283</string>
+					<key>StartingColumnNumber</key>
+					<string>0</string>
+					<key>StartingLineNumber</key>
+					<string>3282</string>
+					<key>Timestamp</key>
+					<string>768716166.154718</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Protein3DViewer/ProteinViewer.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>                // 中间点，使用中心差分
+</string>
+				<key>leading</key>
+				<string>                tangent = normalize(interpolatedPoints[i] - interpolatedPoints[i-1])
+            } else {
+</string>
+				<key>trailing</key>
+				<string>                tangent = normalize(interpolatedPoints[i+1] - interpolatedPoints[i-1])
+            }
+            pathTangents.append(tangent)
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>0</string>
+					<key>EndingLineNumber</key>
+					<string>3367</string>
+					<key>StartingColumnNumber</key>
+					<string>0</string>
+					<key>StartingLineNumber</key>
+					<string>3366</string>
+					<key>Timestamp</key>
+					<string>768716166.154711</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Protein3DViewer/ProteinViewer.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>        } catch {
+</string>
+				<key>leading</key>
+				<string>            helixEntity.model?.materials = [material]
+            return helixEntity
+</string>
+				<key>trailing</key>
+				<string>            print("创建α-螺旋几何体失败: \(error)")
+            return nil
+        }
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+	</array>
+</dict>
+</plist>

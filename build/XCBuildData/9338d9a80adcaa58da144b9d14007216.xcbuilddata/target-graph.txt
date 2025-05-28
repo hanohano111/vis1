@@ -1,0 +1,9 @@
+Target dependency graph (4 targets)
+Target 'Protein3DViewer' in project 'Protein3DViewer'
+➜ Explicit dependency on target 'RealityKitContent' in project 'RealityKitContent'
+Target 'RealityKitContent' in project 'RealityKitContent'
+➜ Explicit dependency on target 'RealityKitContent' in project 'RealityKitContent'
+➜ Explicit dependency on target 'RealityKitContent_RealityKitContent' in project 'RealityKitContent'
+Target 'RealityKitContent' in project 'RealityKitContent'
+➜ Explicit dependency on target 'RealityKitContent_RealityKitContent' in project 'RealityKitContent'
+Target 'RealityKitContent_RealityKitContent' in project 'RealityKitContent' (no dependencies)

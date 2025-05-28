@@ -1,0 +1,158 @@
+{
+  "" : {
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein3DViewer-master.dia",
+    "emit-module-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein3DViewer-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein3DViewer-master-emit-module.dia",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein3DViewer-master.swiftdeps"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/AppModel.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AppModel.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AppModel.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AppModel.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AppModel.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AppModel.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AppModel.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AppModel.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AppModel~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/Common/ShaderTypes.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ShaderTypes.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ShaderTypes.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ShaderTypes.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ShaderTypes.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ShaderTypes.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ShaderTypes.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ShaderTypes.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ShaderTypes~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/ContentView.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ContentView.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ContentView.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ContentView.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ContentView.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ContentView~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/Protein/AtomElement.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AtomElement.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AtomElement.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AtomElement.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AtomElement.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AtomElement.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AtomElement.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AtomElement.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/AtomElement~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/Protein/ChainID.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ChainID.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ChainID.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ChainID.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ChainID.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ChainID.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ChainID.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ChainID.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ChainID~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/Protein/PDBParser.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/PDBParser.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/PDBParser.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/PDBParser.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/PDBParser.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/PDBParser.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/PDBParser.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/PDBParser.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/PDBParser~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/Protein/Protein.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/Protein/ProteinFile.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinFile.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinFile.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinFile.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinFile.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinFile.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinFile.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinFile.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinFile~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/Protein/Residue.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Residue.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Residue.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Residue.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Residue.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Residue.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Residue.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Residue.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Residue~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/Protein/SecondaryStructure.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/SecondaryStructure.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/SecondaryStructure.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/SecondaryStructure.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/SecondaryStructure.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/SecondaryStructure.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/SecondaryStructure.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/SecondaryStructure.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/SecondaryStructure~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/Protein3DViewerApp.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein3DViewerApp.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein3DViewerApp.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein3DViewerApp.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein3DViewerApp.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein3DViewerApp.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein3DViewerApp.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein3DViewerApp.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Protein3DViewerApp~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/ProteinViewer.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinViewer.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinViewer.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinViewer.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinViewer.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinViewer.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinViewer.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinViewer.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ProteinViewer~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/Renderer.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Renderer.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Renderer.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Renderer.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Renderer.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Renderer.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Renderer.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Renderer.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/Renderer~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Protein3DViewer/ToggleImmersiveSpaceButton.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ToggleImmersiveSpaceButton.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ToggleImmersiveSpaceButton.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ToggleImmersiveSpaceButton.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ToggleImmersiveSpaceButton.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ToggleImmersiveSpaceButton.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ToggleImmersiveSpaceButton.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ToggleImmersiveSpaceButton.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/ToggleImmersiveSpaceButton~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/build/Protein3DViewer.build/Debug-iphoneos/Protein3DViewer.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "" : {
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/RealityKitContent-master.dia",
+    "emit-module-dependencies" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/RealityKitContent-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/RealityKitContent-master-emit-module.dia",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/RealityKitContent-master.swiftdeps"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/Sources/RealityKitContent/RealityKitContent.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/RealityKitContent.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/RealityKitContent.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/RealityKitContent.dia",
+    "index-unit-output-path" : "/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/RealityKitContent.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/RealityKitContent.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/RealityKitContent.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/RealityKitContent.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/RealityKitContent~partial.swiftmodule"
+  },
+  "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/DerivedSources/resource_bundle_accessor.swift" : {
+    "const-values" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/resource_bundle_accessor.swiftconstvalues",
+    "dependencies" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/resource_bundle_accessor.d",
+    "diagnostics" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/resource_bundle_accessor.dia",
+    "index-unit-output-path" : "/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/resource_bundle_accessor.o",
+    "llvm-bc" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/resource_bundle_accessor.bc",
+    "object" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/resource_bundle_accessor.o",
+    "swift-dependencies" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/resource_bundle_accessor.swiftdeps",
+    "swiftmodule" : "/Users/a123/Desktop/Protein3DViewer/Packages/RealityKitContent/build/RealityKitContent.build/Debug-iphoneos/RealityKitContent.build/Objects-normal/arm64/resource_bundle_accessor~partial.swiftmodule"
+  }
+}
