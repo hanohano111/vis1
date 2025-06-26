@@ -1,0 +1,7 @@
+// Xcode配置文件
+// 添加RealityKitContent模块的搜索路径
+
+SWIFT_INCLUDE_PATHS = $(SRCROOT)/Packages/RealityKitContent/Sources
+IMPORT_PATHS = $(SRCROOT)/Packages/RealityKitContent/Sources
+FRAMEWORK_SEARCH_PATHS = $(SRCROOT)/Packages/RealityKitContent
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = REALITYKITCONTENT_AVAILABLE

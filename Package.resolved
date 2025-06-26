@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "RealityKitContent",
+      "kind" : "local",
+      "location" : "Packages/RealityKitContent",
+      "state" : {
+        "branch" : null,
+        "revision" : null
+      }
+    }
+  ],
+  "version" : 2
+}

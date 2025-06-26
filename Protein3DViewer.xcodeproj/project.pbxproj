@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		9D2859602DAFC9D20072F262 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 9D28595F2DAFC9D20072F262 /* RealityKitContent */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
 		9D2859792DAFC9D40072F262 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -57,7 +53,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D2859602DAFC9D20072F262 /* RealityKitContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,7 +113,6 @@
 			);
 			name = Protein3DViewer;
 			packageProductDependencies = (
-				9D28595F2DAFC9D20072F262 /* RealityKitContent */,
 			);
 			productName = Protein3DViewer;
 			productReference = 9D28595A2DAFC9D20072F262 /* Protein3DViewer.app */;
@@ -237,7 +231,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Protein3DViewer/Preview Content\"";
-				DEVELOPMENT_TEAM = 664S3PM33X;
+				DEVELOPMENT_TEAM = C4Q2645LZ4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
@@ -264,7 +258,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Protein3DViewer/Preview Content\"";
-				DEVELOPMENT_TEAM = 664S3PM33X;
+				DEVELOPMENT_TEAM = C4Q2645LZ4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
@@ -473,13 +467,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		9D28595F2DAFC9D20072F262 /* RealityKitContent */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = RealityKitContent;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9D2859522DAFC9D20072F262 /* Project object */;
 }

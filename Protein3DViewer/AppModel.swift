@@ -8,6 +8,15 @@
 import SwiftUI
 import RealityKit
 import UniformTypeIdentifiers
+import MultipeerConnectivity
+
+/// 模型标注
+struct ModelAnnotation: Codable, Identifiable {
+    let id: UUID
+    let position: SIMD3<Float>
+    let text: String
+    let color: SIMD4<Float>
+}
 
 /// 维护全局应用状态
 @MainActor
@@ -20,8 +29,12 @@ class AppModel: ObservableObject {
     }
     @Published var immersiveSpaceState = ImmersiveSpaceState.closed
     
+    // UI 控制
+    @Published var showUI: Bool = true
+    @Published var showSuccessMessage: Bool = false
+    
     // 多窗口管理
-    @Published var activeProteinModelID: UUID?
+    @Published var activeProteinModelID: UUID? = nil
     @Published var proteinModels: [UUID: ProteinModelData] = [:]
     @Published var isLoadingModel: Bool = false
     @Published var loadingProgress: Float = 0.0
@@ -40,17 +53,46 @@ class AppModel: ObservableObject {
     @Published var showFileImporter: Bool = false
     @Published var showError: Bool = false
     
+    // 协作相关状态
+    @Published var collaborationManager: CollaborationManager?
+    @Published var spaceSynchronizer: SpaceSynchronizer?
+    @Published var userRepresentation: UserRepresentation?
+    @Published var showCollaborationView: Bool = false
+    
+    // 标注相关
+    @Published var annotations: [ModelAnnotation] = []
+    @Published var selectedAtoms: Set<Int> = []
+    
     // 打开PDB文件
     func openPDBFile(url: URL) async {
         do {
+            // 检查是否在模拟器环境中
+            #if targetEnvironment(simulator)
+            // 模拟器环境不需要安全作用域访问权限
+            #else
+            // 真机环境需要申请安全作用域访问权限
+            let granted = url.startAccessingSecurityScopedResource()
+            defer {
+                if granted {
+                    url.stopAccessingSecurityScopedResource()
+                }
+            }
+            #endif
+            
             // 设置加载状态
             isLoadingModel = true
             loadingProgress = 0.0
+            showSuccessMessage = false  // 重置成功消息
+            
+            // 读取 PDB 文件数据
+            let pdbData = try Data(contentsOf: url)
+            print("[AppModel] 读取 PDB 文件数据，大小：\(pdbData.count) 字节")
             
             // 创建新的ProteinViewer和模型ID
             let newModelID = UUID()
             let proteinViewer = ProteinViewer()
-            let modelData = ProteinModelData(id: newModelID, proteinViewer: proteinViewer)
+            let modelData = ProteinModelData(proteinViewer: proteinViewer)
+            modelData.pdbData = pdbData  // 保存 PDB 数据
             proteinModels[newModelID] = modelData
             
             // 异步加载模型
@@ -86,6 +128,13 @@ class AppModel: ObservableObject {
             // 更新状态
             isLoadingModel = false
             loadingProgress = 1.0
+            showSuccessMessage = true  // 显示成功消息
+            
+            // 设置定时器在3秒后隐藏成功消息
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 3_000_000_000)
+                showSuccessMessage = false
+            }
             
         } catch {
             errorMessage = error.localizedDescription
@@ -254,5 +303,280 @@ class AppModel: ObservableObject {
         } else {
             print("AppModel: 没有活动模型，无法刷新选中原子")
         }
+    }
+    
+    // 添加新分子
+    func addProteinModel(_ model: ProteinModelData) {
+        proteinModels[model.id] = model
+        activeProteinModelID = model.id
+        // 协作状态下自动同步新模型
+        if let manager = collaborationManager, manager.isConnected {
+            if let state = manager.currentModelStateProvider?() {
+                manager.sendModelState(state)
+            }
+        }
+    }
+    
+    // 切换当前激活分子
+    func setActiveProteinModel(_ id: UUID) {
+        if proteinModels[id] != nil {
+            activeProteinModelID = id
+            // 协作状态下自动同步切换后的模型
+            if let manager = collaborationManager, manager.isConnected {
+                if let state = manager.currentModelStateProvider?() {
+                    manager.sendModelState(state)
+                }
+            }
+        }
+    }
+    
+    // 初始化协作组件
+    func initializeCollaboration() {
+        print("[AppModel] 初始化协作组件")
+        
+        // 初始化协作管理器
+        let manager = CollaborationManager()
+        
+        // 创建并初始化 MCSession
+        let peerID = MCPeerID(displayName: UIDevice.current.name)
+        let session = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
+        print("[AppModel] 创建 MCSession，设备名称: \(peerID.displayName)")
+        
+        // 初始化协作管理器
+        manager.initialize(
+            session: session,
+            modelStateProvider: { [weak self] in
+                guard let self = self else {
+                    print("[AppModel] 警告：self 已被释放")
+                    return ModelState(
+                        transform: .identity,
+                        scale: [1, 1, 1],
+                        annotations: [],
+                        selectedAtoms: [],
+                        currentModel: nil,
+                        modelData: nil
+                    )
+                }
+                
+                // 获取当前模型状态
+                guard let modelID = self.activeProteinModelID,
+                      let modelData = self.proteinModels[modelID] else {
+                    print("[AppModel] 警告：当前没有活动的模型")
+                    return ModelState(
+                        transform: .identity,
+                        scale: [1, 1, 1],
+                        annotations: [],
+                        selectedAtoms: [],
+                        currentModel: nil,
+                        modelData: nil
+                    )
+                }
+                
+                let transform = modelData.proteinViewer.getScene()?.transform ?? .identity
+                let scale = modelData.proteinViewer.getScene()?.scale ?? [1, 1, 1]
+                let selectedAtoms = self.selectedAtoms
+                
+                print("[AppModel] 提供当前模型状态:")
+                print("- 模型名称: \(modelData.name)")
+                print("- 变换: 位置(\(transform.translation)), 旋转(\(transform.rotation)), 缩放(\(scale))")
+                print("- 选中原子数: \(selectedAtoms.count)")
+                print("- 标注数: \(self.annotations.count)")
+                
+                // 确保 PDB 数据存在
+                guard let pdbData = modelData.pdbData else {
+                    print("[AppModel] 错误：模型没有 PDB 数据")
+                    return ModelState(
+                        transform: transform,
+                        scale: scale,
+                        annotations: self.annotations,
+                        selectedAtoms: selectedAtoms,
+                        currentModel: modelData.name,
+                        modelData: nil
+                    )
+                }
+                
+                print("- PDB数据大小: \(pdbData.count) 字节")
+                
+                return ModelState(
+                    transform: transform,
+                    scale: scale,
+                    annotations: self.annotations,
+                    selectedAtoms: selectedAtoms,
+                    currentModel: modelData.name,
+                    modelData: pdbData
+                )
+            },
+            modelDataProvider: { [weak self] in
+                guard let self = self,
+                      let modelID = self.activeProteinModelID,
+                      let modelData = self.proteinModels[modelID] else {
+                    print("[AppModel] 警告：无法获取当前模型")
+                    return Data()
+                }
+                
+                guard let pdbData = modelData.pdbData else {
+                    print("[AppModel] 错误：模型没有 PDB 数据")
+                    return Data()
+                }
+                
+                // 验证数据
+                if pdbData.count == 0 {
+                    print("[AppModel] 错误：PDB 数据为空")
+                } else {
+                    print("[AppModel] 提供模型数据，大小: \(pdbData.count) 字节")
+                }
+                
+                return pdbData
+            },
+            onModelStateReceived: { [weak self] state in
+                guard let self = self else {
+                    print("[AppModel] 警告：self 已被释放")
+                    return
+                }
+                
+                Task { @MainActor in
+                    print("[AppModel] 收到模型状态更新:")
+                    print("- 模型名称: \(state.currentModel ?? "未知")")
+                    print("- 变换: 位置(\(state.transform.translation)), 旋转(\(state.transform.rotation)), 缩放(\(state.scale))")
+                    print("- 选中原子数: \(state.selectedAtoms.count)")
+                    print("- 标注数: \(state.annotations.count)")
+                    if let modelData = state.modelData {
+                        print("- 收到模型数据，大小: \(modelData.count) 字节")
+                    } else {
+                        print("- 模型数据: 无")
+                    }
+                    
+                    // 检查是否需要加载新模型
+                    if let modelData = state.modelData,
+                       let modelName = state.currentModel {
+                        print("[AppModel] 开始加载新模型:")
+                        print("- 模型名称: \(modelName)")
+                        print("- 数据大小: \(modelData.count) 字节")
+                        
+                        // 创建新的 ProteinViewer
+                        let proteinViewer = ProteinViewer()
+                        print("[AppModel] 创建新的 ProteinViewer")
+                        
+                        // 创建新的模型数据
+                        let newModelData = ProteinModelData(proteinViewer: proteinViewer)
+                        newModelData.name = modelName
+                        newModelData.pdbData = modelData
+                        print("[AppModel] 创建新的 ProteinModelData，ID: \(newModelData.id)")
+                        
+                        do {
+                            // 使用 FileManager 的临时目录
+                            let tempDir = FileManager.default.temporaryDirectory
+                            let tempFile = tempDir.appendingPathComponent("\(UUID().uuidString).pdb")
+                            
+                            // 写入数据到临时文件
+                            try modelData.write(to: tempFile, options: .atomic)
+                            print("[AppModel] 创建临时文件: \(tempFile.path)")
+                            
+                            // 确保文件存在
+                            guard FileManager.default.fileExists(atPath: tempFile.path) else {
+                                throw NSError(domain: "AppModel", code: -1, userInfo: [NSLocalizedDescriptionKey: "临时文件创建失败"])
+                            }
+                            
+                            // 加载模型
+                            print("[AppModel] 开始加载 PDB 数据")
+                            try await proteinViewer.loadPDBFile(from: tempFile, lowQualityMode: true)
+                            print("[AppModel] PDB 数据加载成功")
+                            
+                            // 更新模型状态
+                            if let scene = proteinViewer.getScene() {
+                                scene.transform = state.transform
+                                scene.scale = state.scale
+                                print("[AppModel] 更新模型变换:")
+                                print("- 位置: \(scene.transform.translation)")
+                                print("- 旋转: \(scene.transform.rotation)")
+                                print("- 缩放: \(scene.scale)")
+                            } else {
+                                print("[AppModel] 警告：无法获取场景")
+                            }
+                            
+                            // 添加到模型列表并设置为活动模型
+                            self.proteinModels[newModelData.id] = newModelData
+                            self.activeProteinModelID = newModelData.id
+                            print("[AppModel] 模型已添加到列表并设置为活动模型")
+                            
+                            // 更新其他状态
+                            self.selectedAtoms = state.selectedAtoms
+                            self.annotations = state.annotations
+                            print("[AppModel] 更新状态:")
+                            print("- 选中原子数: \(self.selectedAtoms.count)")
+                            print("- 标注数: \(self.annotations.count)")
+                            
+                            // 删除临时文件
+                            try? FileManager.default.removeItem(at: tempFile)
+                            print("[AppModel] 临时文件已删除")
+                            
+                            print("[AppModel] 模型同步完成")
+                        } catch {
+                            print("[AppModel] 错误：加载模型失败")
+                            print("- 错误信息: \(error.localizedDescription)")
+                            if let decodingError = error as? DecodingError {
+                                print("- 解码错误详情: \(decodingError)")
+                            }
+                        }
+                    } else if let modelID = self.activeProteinModelID,
+                              let modelData = self.proteinModels[modelID] {
+                        print("[AppModel] 更新现有模型状态:")
+                        print("- 模型ID: \(modelID)")
+                        print("- 模型名称: \(modelData.name)")
+                        
+                        // 只更新现有模型的状态
+                        if let scene = modelData.proteinViewer.getScene() {
+                            scene.transform = state.transform
+                            scene.scale = state.scale
+                            print("- 更新变换:")
+                            print("  - 位置: \(scene.transform.translation)")
+                            print("  - 旋转: \(scene.transform.rotation)")
+                            print("  - 缩放: \(scene.scale)")
+                        } else {
+                            print("- 警告：无法获取场景")
+                        }
+                        
+                        self.selectedAtoms = state.selectedAtoms
+                        self.annotations = state.annotations
+                        print("- 更新状态:")
+                        print("  - 选中原子数: \(self.selectedAtoms.count)")
+                        print("  - 标注数: \(self.annotations.count)")
+                    } else {
+                        print("[AppModel] 警告：无法找到活动模型")
+                    }
+                }
+            }
+        )
+        
+        self.collaborationManager = manager
+        print("[AppModel] 协作管理器初始化完成")
+        
+        // 初始化空间同步器
+        self.spaceSynchronizer = SpaceSynchronizer(collaborationManager: manager)
+        print("[AppModel] 空间同步器初始化完成")
+        
+        // 初始化用户表示
+        self.userRepresentation = UserRepresentation(collaborationManager: manager)
+        print("[AppModel] 用户表示初始化完成")
+    }
+    
+    // MARK: - Public Methods for Collaboration
+    
+    /// 获取当前选中的原子
+    func getSelectedAtoms() -> Set<Int> {
+        return selectedAtoms
+    }
+    
+    /// 设置选中的原子
+    func setSelectedAtoms(_ atoms: Set<Int>) {
+        selectedAtoms = atoms
+    }
+    
+    // 清理协作组件
+    func cleanupCollaboration() {
+        collaborationManager?.leaveSession()
+        collaborationManager = nil
+        spaceSynchronizer = nil
+        userRepresentation = nil
     }
 }

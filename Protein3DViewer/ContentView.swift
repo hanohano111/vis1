@@ -7,7 +7,12 @@
 
 import SwiftUI
 import RealityKit
+
+// 使用条件编译处理RealityKitContent模块导入
+#if canImport(RealityKitContent)
 import RealityKitContent
+#endif
+
 import UniformTypeIdentifiers
 
 struct ContentView: View {
@@ -34,218 +39,36 @@ struct ContentView: View {
     @State private var rightSidePadding: CGFloat = 20
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // 3D场景部分
-                RealityView { content in
-                    print("初始化RealityView")
-                    proteinViewer.setupRealityView(content: content)
-                }
-                .id(modelLoaded) // 强制刷新
-                .gesture(
-                    SpatialTapGesture()
-                        .targetedToAnyEntity()
-                        .onEnded { value in
-                            if let entity = value.entity as? ModelEntity {
-                                Task { @MainActor in
-                                    handleTap(entity: entity)
-                                }
-                            }
-                        }
-                )
-                .gesture(
-                    DragGesture()
-                        .onChanged { value in
-                            let sensitivity: Float = 0.01
-                            let deltaX = Float(value.translation.width) * sensitivity
-                            rotation = simd_quatf(angle: deltaX, axis: [0, 1, 0]) * rotation
-                            if let scene = proteinViewer.getScene() {
-                                scene.orientation = rotation
-                            }
-                        }
-                )
-                .gesture(
-                    MagnificationGesture()
-                        .onChanged { value in
-                            let scaleFactor = Float(value)
-                            proteinViewer.scale(by: scaleFactor)
-                            scale = scaleFactor
-                        }
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                
-                // 左侧操作面板
-                if modelLoaded {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("操作菜单")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                        
+        VStack {
+            // 分子切换栏
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(Array(appModel.proteinModels.values), id: \ .id) { model in
                         Button(action: {
-                            // 旋转操作
+                            appModel.setActiveProteinModel(model.id)
                         }) {
-                            Image(systemName: "rotate.3d")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 24, height: 24)
+                            Text("分子\(model.id.uuidString.prefix(4))")
+                                .padding(8)
+                                .background(appModel.activeProteinModelID == model.id ? Color.blue : Color.gray.opacity(0.3))
                                 .foregroundColor(.white)
+                                .cornerRadius(8)
                         }
-                        .buttonStyle(.plain)
-                        .padding(10)
-                        .background(Color.blue.opacity(0.7))
-                        .clipShape(Circle())
-                        
-                        Button(action: {
-                            // 缩放操作
-                        }) {
-                            Image(systemName: "plus.magnifyingglass")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 24, height: 24)
-                                .foregroundColor(.white)
-                        }
-                        .buttonStyle(.plain)
-                        .padding(10)
-                        .background(Color.blue.opacity(0.7))
-                        .clipShape(Circle())
-                        
-                        Spacer()
                     }
-                    .padding()
-                    .frame(width: 100)
-                    .background(Color.black.opacity(0.4))
-                    .cornerRadius(15)
-                    .padding(.leading, leftSidePadding)
-                    .position(x: 50 + leftSidePadding/2, y: geometry.size.height / 2)
-                    .animation(.easeInOut, value: leftSidePadding)
-                    
-                    // 右侧信息面板
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("分子信息")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                        
-                        if let pdbInfo = proteinViewer.pdbInfo {
-                            Text("名称: \(pdbInfo.name)")
-                                .font(.subheadline)
-                                .foregroundColor(.white)
-                            
-                            Text("原子数: \(pdbInfo.atomCount)")
-                                .font(.subheadline)
-                                .foregroundColor(.white)
-                                
-                            if let resolution = pdbInfo.resolution {
-                                Text(String(format: "分辨率: %.2f Å", resolution))
-                                    .font(.subheadline)
-                                    .foregroundColor(.white)
-                            }
-                            
-                            if !pdbInfo.description.isEmpty {
-                                Text("描述: \(pdbInfo.description)")
-                                    .font(.caption)
-                                    .foregroundColor(.white)
-                                    .lineLimit(3)
-                            }
-                        } else {
-                            Text("暂无分子信息")
-                                .font(.subheadline)
-                                .foregroundColor(.white.opacity(0.7))
-                        }
-                        
-                        Spacer()
-                    }
-                    .padding()
-                    .frame(width: 150)
-                    .background(Color.black.opacity(0.4))
-                    .cornerRadius(15)
-                    .padding(.trailing, rightSidePadding)
-                    .position(x: geometry.size.width - 75 - rightSidePadding/2, y: geometry.size.height / 2)
-                    .animation(.easeInOut, value: rightSidePadding)
                 }
-                
-                // 加载进度与提示
-                if isLoading {
-                    ProgressView("正在加载模型...")
-                        .padding()
-                        .background(.regularMaterial)
-                        .cornerRadius(10)
-                } else if !modelLoaded {
-                    Text("请加载PDB文件")
-                        .font(.headline)
-                        .foregroundColor(.secondary)
-                        .padding()
-                        .background(.regularMaterial)
-                        .cornerRadius(10)
-                } else if showSuccessMessage {
-                    Text("模型已加载")
-                        .font(.headline)
-                        .foregroundColor(.green)
-                        .padding()
-                        .background(.regularMaterial)
-                        .cornerRadius(10)
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                withAnimation {
-                                    showSuccessMessage = false
-                                }
-                            }
-                        }
-                }
-                
-                // 控制面板部分
-                VStack {
-                    Spacer()
-                    controlPanel
-                        .padding()
-                        .frame(maxWidth: 700) // 限制面板宽度
-                        .background(.thinMaterial) // 毛玻璃背景
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                        .shadow(radius: 10)
-                        .padding(.bottom, 20)
-                        .disabled(isLoading)
-                }
+            }.padding(.top)
+            // 添加分子按钮
+            Button("添加分子") {
+                // 这里应弹出文件选择或加载新分子逻辑
+                let newViewer = ProteinViewer() // 需根据实际加载
+                let newModel = ProteinModelData(proteinViewer: newViewer)
+                appModel.addProteinModel(newModel)
+            }.padding(.bottom)
+            // 只渲染当前激活分子
+            if let activeID = appModel.activeProteinModelID, appModel.proteinModels[activeID] != nil {
+                ProteinModelView(modelID: activeID)
+            } else {
+                Text("请添加并选择一个分子")
             }
-        }
-        .onReceive(proteinViewer.$modelWidth) { width in
-            adjustUILayout(modelWidth: width)
-        }
-        .fileImporter(
-            isPresented: $showFileImporter,
-            allowedContentTypes: [.init(filenameExtension: "pdb")!],
-            allowsMultipleSelection: false
-        ) { result in
-            Task {
-                do {
-                    let urls = try result.get()
-                    if let url = urls.first {
-                        print("选择了文件: \(url.lastPathComponent)")
-                        isLoading = true
-                        modelLoaded = false
-                        
-                        try await proteinViewer.loadPDBFile(from: url, lowQualityMode: lowQualityMode)
-                        
-                        modelLoaded = true
-                        isLoading = false
-                        showSuccessMessage = true
-                        print("模型加载完成")
-                        
-                        // 加载完成后调整布局
-                        adjustUILayout(modelWidth: proteinViewer.modelWidth)
-                    }
-                } catch {
-                    errorMessage = error.localizedDescription
-                    showError = true
-                    isLoading = false
-                    print("加载文件错误: \(error.localizedDescription)")
-                }
-            }
-        }
-        .alert("错误", isPresented: $showError) {
-            Button("确定") {
-                showError = false
-            }
-        } message: {
-            Text(errorMessage ?? "未知错误")
         }
     }
     

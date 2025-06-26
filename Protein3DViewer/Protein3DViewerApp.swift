@@ -7,6 +7,12 @@
 
 import SwiftUI
 import CompositorServices
+import UIKit
+
+// 使用条件编译处理RealityKitContent模块导入
+#if canImport(RealityKitContent)
+import RealityKitContent
+#endif
 
 struct ContentStageConfiguration: CompositorLayerConfiguration {
     func makeConfiguration(capabilities: LayerRenderer.Capabilities, configuration: inout LayerRenderer.Configuration) {
@@ -26,35 +32,44 @@ struct ContentStageConfiguration: CompositorLayerConfiguration {
 @main
 struct Protein3DViewerApp: App {
     @StateObject private var appModel = AppModel()
+    
+    init() {
+        // 配置全局窗口行为
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            for window in windowScene.windows {
+                window.isOpaque = true
+                window.backgroundColor = .clear
+                // 禁用窗口虚化效果
+                window.alpha = 1.0
+            }
+        }
+    }
 
     var body: some Scene {
         // 主控制面板窗口
         WindowGroup(id: "controlPanel") {
             ControlPanelView()
                 .environmentObject(appModel)
+                .frame(width: 600, height: 450)
         }
         .windowStyle(.plain)
-        .defaultSize(width: 1000, height: 800)// 设置窗口默认大小。
-        
+        .defaultSize(width: 600, height: 450)
+        .windowResizability(.contentSize)
 
-        // 3D蛋白质模型窗口 用于展示 3D 蛋白质模型。
+        // 3D蛋白质模型窗口
         WindowGroup(id: "proteinModel") {
-            // 若有值，显示ProteinModelView并传递对应的模型 ID 和appModel环境对象，展示具体的 3D 蛋白质模型。
             if let activeModelID = appModel.activeProteinModelID {
                 ProteinModelView(modelID: activeModelID)
                     .environmentObject(appModel)
             } else {
-                // 显示一个占位视图，提示用户先打开模型
                 Text("请先在控制面板中打开一个PDB文件")
-                    .font(.headline)
+                    .font(.system(size: 24, weight: .medium))
                     .foregroundColor(.secondary)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .windowStyle(.volumetric)
-        //窗口大小，改下面三个数(改这里！！！）
-        .defaultSize(width: 2200, height: 2200, depth: 2000)
-        
+        .defaultSize(width: 2400, height: 2400, depth: 2200)
 
         // 支持全空间沉浸
         ImmersiveSpace(id: appModel.immersiveSpaceID) {

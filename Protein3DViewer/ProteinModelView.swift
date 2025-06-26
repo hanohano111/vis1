@@ -5,7 +5,7 @@ struct ProteinModelView: View {
     let modelID: UUID //用于标识特定的蛋白质模型。
     @EnvironmentObject private var appModel: AppModel
     //创建一个本地的视图模型ProteinViewModel，用于管理视图内的交互状态，如旋转、移动、缩放等操作状态。
-    @State private var viewModel = ProteinViewModel()
+    @StateObject private var viewModel = ProteinViewModel()
     
     var body: some View {
         ZStack {
@@ -18,17 +18,18 @@ struct ProteinModelView: View {
             
             // 状态标签
             statusLabelsView
+                .opacity(appModel.showUI ? 1 : 0)
         }
         //通过.ornament修饰符分别在场景右侧和左侧添加装饰物。
         .ornament(
-            visibility: .automatic,
+            visibility: appModel.showUI ? .automatic : .hidden,
             attachmentAnchor: .scene(.trailing)
         ) {
             modelControlsOrnament
         }
         // 添加左侧装饰物，包含模型显示控制和测量功能
         .ornament(
-            visibility: .automatic,
+            visibility: appModel.showUI ? .automatic : .hidden,
             attachmentAnchor: .scene(.leading)
         ) {
             displayControlsOrnament
@@ -70,7 +71,7 @@ struct ProteinModelView: View {
                     )
             } else {
                 // 显示错误信息
-                Text("无法加载模型数据")
+                Text("Unable to load model data")
                     .foregroundColor(.red)
                     .padding()
                     .background(.regularMaterial)
@@ -119,7 +120,6 @@ struct ProteinModelView: View {
         .gesture(spatialTapGesture(modelData: modelData))
         .gesture(dragGesture(modelData: modelData))
         .gesture(rotationGesture(modelData: modelData))
-        .gesture(magnificationGesture(modelData: modelData))
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
         .padding(10)
@@ -191,9 +191,9 @@ struct ProteinModelView: View {
                 // 当前活动操作模式
                 if viewModel.isRotating || viewModel.isMoving || viewModel.isScaling || viewModel.isChangingColor {
                     Label(
-                        viewModel.isRotating ? "旋转模式" : 
-                         viewModel.isMoving ? "移动模式" : 
-                        viewModel.isScaling ? "缩放模式" : "颜色修改模式",
+                        viewModel.isRotating ? "Rotate Mode" : 
+                         viewModel.isMoving ? "Move Mode" : 
+                        viewModel.isScaling ? "Scale Mode" : "Color Change Mode",
                         systemImage: viewModel.isRotating ? "rotate.3d" : 
                                     viewModel.isMoving ? "hand.draw" : 
                                     viewModel.isScaling ? "plus.magnifyingglass" : "paintbrush"
@@ -209,7 +209,7 @@ struct ProteinModelView: View {
                 
                 // 测量模式标签
                 if appModel.isMeasuring {
-                    Label("测量模式", systemImage: "ruler")
+                    Label("Measurement Mode", systemImage: "ruler")
                         .font(.system(size: 14, weight: .medium))
                         .padding(8)
                         .background(
@@ -222,7 +222,7 @@ struct ProteinModelView: View {
                 // 测量距离标签
                 if let distance = appModel.measurementDistance {
                     Label(
-                        String(format: "%.2f Å", distance),
+                        String(format: "Distance: %.2f Å", distance),
                         systemImage: "ruler.fill"
                     )
                     .font(.system(size: 14, weight: .medium))
@@ -244,14 +244,14 @@ struct ProteinModelView: View {
         VStack(spacing: 20) {
             Spacer()
             
-            Text("模型控制")
+            Text("Model Controls")
                 .font(.headline)
                 .foregroundColor(.secondary)
                 .padding(.bottom, 10)
             
             ModelControlButton(
                 systemName: "rotate.3d",
-                label: "自由旋转",
+                label: "Rotate Model",
                 isActive: $viewModel.isRotating
             ) {
                 viewModel.toggleRotation()
@@ -259,7 +259,7 @@ struct ProteinModelView: View {
             
             ModelControlButton(
                 systemName: "hand.draw",
-                label: "移动模型",
+                label: "Move Model",
                 isActive: $viewModel.isMoving
             ) {
                 viewModel.toggleMoving()
@@ -267,7 +267,7 @@ struct ProteinModelView: View {
             
             ModelControlButton(
                 systemName: "plus.magnifyingglass",
-                label: "缩放",
+                label: "Scale Model",
                 isActive: $viewModel.isScaling
             ) {
                 viewModel.toggleScaling()
@@ -278,23 +278,20 @@ struct ProteinModelView: View {
             
             ModelControlButton(
                 systemName: "house",
-                label: "重置位置"
+                label: "Reset Position"
             ) {
                 resetModelPosition()
             }
             
             Spacer()
         }
-        .padding(20)
+        .padding()
         .glassBackgroundEffect()
-        .frame(width: 300, height: 800)
     }
     
     // 显示控制装饰物 
     private var displayControlsOrnament: some View {
         VStack(spacing: 20) {
-            Spacer()
-            
             // 显示模式选择
             displayModeSection
             
@@ -319,14 +316,14 @@ struct ProteinModelView: View {
             Spacer()
         }
         .padding(20)
-        .frame(width: 300, height: 800)
+        .frame(width: 300)
         .glassBackgroundEffect()
     }
     
     // 显示模式选择部分
     private var displayModeSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("显示模式")
+            Text("Display Mode")
                 .font(.headline)
                 .foregroundColor(.secondary)
             
@@ -336,44 +333,40 @@ struct ProteinModelView: View {
                     displayModeRow(mode)
                 }
             }
-            
-           
-            
-            
         }
     }
     
-    // 显示模式行
+    // 显示模式行 - 使用与Start Measurement相同的按钮样式
     private func displayModeRow(_ mode: ProteinViewer.DisplayMode) -> some View {
-        HStack {
-            Text(mode.displayName)
-                .foregroundColor(appModel.displayMode == mode ? .blue : .primary)
-                .font(.body)
-            Spacer()
-            if appModel.displayMode == mode {
-                Image(systemName: "checkmark")
-                    .foregroundColor(.blue)
-            }
-        }
-        .contentShape(Rectangle())
-        .onTapGesture {
+        Button(action: {
             Task {
                 appModel.displayMode = mode
                 await appModel.updateDisplayMode(mode)
             }
+        }) {
+            HStack {
+                Spacer()
+                Text(mode.displayName)
+                    .font(.body)
+                Spacer()
+            }
         }
+        .buttonStyle(.borderedProminent)
+        // 选中时使用蓝色，未选中时使用系统默认颜色
+        .tint(appModel.displayMode == mode ? .blue : nil)
+        .padding(.vertical, 4)
     }
     
     // 模型信息部分
     private var modelInfoSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("模型信息")
+            Text("Model Info")
                 .font(.headline)
                 .foregroundColor(.secondary)
             
             if let modelData = appModel.proteinModels[modelID] {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("蛋白质名称:")
+                    Text("Protein Name:")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     
@@ -381,16 +374,16 @@ struct ProteinModelView: View {
                         .font(.body)
                         .foregroundColor(.primary)
                     
-                    Text("原子数量: \(modelData.atomCount)")
+                    Text("Atom Count: \(modelData.atomCount)")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     
-                    Text("分子量: \(String(format: "%.1f", modelData.molecularWeight)) Da")
+                    Text("Molecular Weight: \(String(format: "%.1f", modelData.molecularWeight)) Da")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     
                     if modelData.sequence != "未获取序列" {
-                        Text("氨基酸序列:")
+                        Text("Amino Acid Sequence:")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                             .padding(.top, 4)
@@ -402,7 +395,7 @@ struct ProteinModelView: View {
                     }
                 }
             } else {
-                Text("未加载模型数据")
+                Text("Model data not loaded")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
@@ -412,42 +405,43 @@ struct ProteinModelView: View {
     // 测量部分
     private var measurementSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("测量工具")
+            Text("Measurement Tool")
                 .font(.headline)
                 .foregroundColor(.secondary)
             
-            Button(appModel.isMeasuring ? "结束测量" : "开始测量") {
+            Button(appModel.isMeasuring ? "End Measurement" : "Start Measurement") {
                 appModel.toggleMeasuring()
             }
             .buttonStyle(.borderedProminent)
             .frame(maxWidth: .infinity)
             
+            // 显示测量状态和距离
             if appModel.isMeasuring {
-                Text("请点击两个原子进行测量")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-            
-            if let distance = appModel.measurementDistance {
-                HStack {
-                    Text("原子间距离:")
-                    Text(String(format: "%.2f Å", distance))
-                        .bold()
-                        .foregroundColor(.green)
+                if let distance = appModel.measurementDistance {
+                    Text(String(format: "Distance: %.2f Å", distance))
+                        .font(.headline)
+                        .foregroundColor(.blue)
+                        .padding(.top, 4)
+                } else {
+                    Text("Please select two atoms to measure")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .padding(.top, 4)
                 }
             }
         }
+        .padding(.vertical, 8)
     }
     
     // 颜色修改部分
     private var colorChangeSection: some View {
         VStack(alignment: .leading, spacing: 15) {
-            Text("修改颜色")
+            Text("Change Color")
                 .font(.headline)
                 .foregroundColor(.secondary)
             
             // 使用系统标准按钮样式确保更好的点击响应
-            Button(viewModel.isChangingColor ? "退出颜色修改" : "开始修改颜色") {
+            Button(viewModel.isChangingColor ? "Exit Color Mode" : "Start Color Mode") {
                 viewModel.toggleColorChange()
                 
                 // 额外确保选中状态被清除，因为我们已经在viewModel中处理了选中颜色
@@ -468,7 +462,7 @@ struct ProteinModelView: View {
                         .fill(.orange)
                         .frame(width: 10, height: 10)
                     
-                    Text("颜色修改模式已激活")
+                    Text("Color mode is active")
                         .font(.callout)
                         .foregroundColor(.orange)
                 }
@@ -477,7 +471,7 @@ struct ProteinModelView: View {
                 // 颜色选择区域
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
-                        Text("请选择要应用的颜色:")
+                        Text("Select a color to apply:")
                             .font(.callout)
                             .foregroundColor(.primary)
                         
@@ -490,7 +484,7 @@ struct ProteinModelView: View {
                                 .shadow(color: Color(selectedColor).opacity(0.7), radius: 1)
                             
                             // 添加选中状态的文本指示
-                            Text("(已选择)")
+                            Text("(Selected)")
                                 .font(.caption)
                                 .foregroundColor(.green)
                                 .transition(.opacity)
@@ -500,7 +494,7 @@ struct ProteinModelView: View {
                     
                     // 颜色选择状态指示
                     if viewModel.selectedColor != nil {
-                        Text("点击任意原子应用此颜色")
+                        Text("Tap any atom to apply this color")
                             .font(.caption)
                             .foregroundColor(.blue)
                             .padding(.vertical, 2)
@@ -520,39 +514,24 @@ struct ProteinModelView: View {
                     ], spacing: 1) {
                         // 标准颜色
                         ColorButton(color: .red, isSelected: viewModel.selectedColor == .red, onSelect: { setSelectedColor(.red) })
-                            .id("red_\(viewModel.selectedColor == .red)")
                         ColorButton(color: .orange, isSelected: viewModel.selectedColor == .orange, onSelect: { setSelectedColor(.orange) })
-                            .id("orange_\(viewModel.selectedColor == .orange)")
                         ColorButton(color: .yellow, isSelected: viewModel.selectedColor == .yellow, onSelect: { setSelectedColor(.yellow) })
-                            .id("yellow_\(viewModel.selectedColor == .yellow)")
                         ColorButton(color: .green, isSelected: viewModel.selectedColor == .green, onSelect: { setSelectedColor(.green) })
-                            .id("green_\(viewModel.selectedColor == .green)")
                         ColorButton(color: .blue, isSelected: viewModel.selectedColor == .blue, onSelect: { setSelectedColor(.blue) })
-                            .id("blue_\(viewModel.selectedColor == .blue)")
                         
                         // 更多颜色
                         ColorButton(color: .purple, isSelected: viewModel.selectedColor == .purple, onSelect: { setSelectedColor(.purple) })
-                            .id("purple_\(viewModel.selectedColor == .purple)")
                         ColorButton(color: .pink, isSelected: viewModel.selectedColor == .pink, onSelect: { setSelectedColor(.pink) })
-                            .id("pink_\(viewModel.selectedColor == .pink)")
                         ColorButton(color: .teal, isSelected: viewModel.selectedColor == .teal, onSelect: { setSelectedColor(.teal) })
-                            .id("teal_\(viewModel.selectedColor == .teal)")
                         ColorButton(color: .brown, isSelected: viewModel.selectedColor == .brown, onSelect: { setSelectedColor(.brown) })
-                            .id("brown_\(viewModel.selectedColor == .brown)")
                         ColorButton(color: .cyan, isSelected: viewModel.selectedColor == .cyan, onSelect: { setSelectedColor(.cyan) })
-                            .id("cyan_\(viewModel.selectedColor == .cyan)")
                         
                         // 额外颜色
                         ColorButton(color: .indigo, isSelected: viewModel.selectedColor == .indigo, onSelect: { setSelectedColor(.indigo) })
-                            .id("indigo_\(viewModel.selectedColor == .indigo)")
                         ColorButton(color: .mint, isSelected: viewModel.selectedColor == .mint, onSelect: { setSelectedColor(.mint) })
-                            .id("mint_\(viewModel.selectedColor == .mint)")
                         ColorButton(color: .gray, isSelected: viewModel.selectedColor == .gray, onSelect: { setSelectedColor(.gray) })
-                            .id("gray_\(viewModel.selectedColor == .gray)")
                         ColorButton(color: .black, isSelected: viewModel.selectedColor == .black, onSelect: { setSelectedColor(.black) })
-                            .id("black_\(viewModel.selectedColor == .black)")
                         ColorButton(color: .white, isSelected: viewModel.selectedColor == .white, onSelect: { setSelectedColor(.white) })
-                            .id("white_\(viewModel.selectedColor == .white)")
                     }
                     .padding(2)
                     .background(Color.black.opacity(0.03))
@@ -563,7 +542,7 @@ struct ProteinModelView: View {
                 // 当前选中的颜色和操作说明
                 if let selectedColor = viewModel.selectedColor {
                     HStack {
-                        Text("已选颜色:")
+                        Text("Selected Color:")
                             .font(.caption)
                         
                         Circle()
@@ -574,12 +553,12 @@ struct ProteinModelView: View {
                     }
                     .padding(.top, 5)
                     
-                    Text("请点击原子应用颜色")
+                    Text("Tap an atom to apply color")
                     .font(.caption)
                     .foregroundColor(.secondary)
                         .padding(.vertical, 2)
                 } else {
-                    Text("请先选择上方的颜色")
+                    Text("Please select a color above")
                         .font(.caption)
                         .foregroundColor(.secondary)
                         .padding(.vertical, 2)
@@ -587,14 +566,14 @@ struct ProteinModelView: View {
                 
                 // 选中原子信息显示
                 if let selectedIndex = appModel.selectedAtomIndex {
-                    Text("已选中原子 \(selectedIndex)")
+                    Text("Selected atom \(selectedIndex)")
                         .font(.caption)
                         .foregroundColor(.primary)
                         .padding(.vertical, 2)
                 }
                 
                 // 快捷操作按钮 - 增大按钮尺寸
-                Button("应用到所有原子") {
+                Button("Apply to all atoms") {
                     applyColorToAll()
                 }
                 .buttonStyle(.borderedProminent)
@@ -603,7 +582,7 @@ struct ProteinModelView: View {
                 .padding(.top, 8)
                 .frame(maxWidth: .infinity)
             } else {
-                Text("点击上方按钮开始修改原子颜色")
+                Text("Tap the button above to start changing atom colors")
                     .font(.callout)
                     .foregroundColor(.secondary)
                 .padding(.vertical, 6)
@@ -618,64 +597,115 @@ struct ProteinModelView: View {
         SpatialTapGesture()
             .targetedToAnyEntity()
             .onEnded { value in
-                if let entity = value.entity as? ModelEntity {
-                    Task {
-                        print("用户点击了3D空间中的实体")
-                        if let index = getAtomIndex(entity: entity, proteinViewer: modelData.proteinViewer) {
-                            print("识别到点击的原子索引: \(index)")
-                            handleAtomTap(at: index)
-                        } else {
-                            print("未能识别点击的原子")
-                        }
+                // 获取点击的实体
+                guard let tappedEntity = value.entity as? ModelEntity else { return }
+                
+                // 获取原子索引
+                if let atomIndex = modelData.proteinViewer.getEntityAtomIndex(tappedEntity) {
+                    print("点击了原子: \(atomIndex)")
+                    
+                    // 如果在测量模式下
+                    if appModel.isMeasuring {
+                        print("测量模式：添加测量点")
+                        appModel.addMeasurementPoint(at: atomIndex)
+                        return
+                    }
+                    
+                    // 如果在颜色修改模式下
+                    if viewModel.isChangingColor {
+                        handleAtomTap(at: atomIndex)
+                        return
                     }
                 }
             }
     }
     
-    // 拖拽手势
+    // 拖拽手势（包含移动、旋转和缩放功能）
     private func dragGesture(modelData: ProteinModelData) -> some Gesture {
-        // 添加对移动状态的跟踪
-        DragGesture(minimumDistance: 5) // 大幅提高最小识别距离，避免轻微抖动触发移动
+        DragGesture(minimumDistance: 5)
             .onChanged { value in
-                // 只有在移动模式下才处理拖拽
-                guard viewModel.isMoving else { return }
-                
-                // 忽略过小的移动距离，防止抖动
-                let totalDistance = sqrt(pow(value.translation.width, 2) + pow(value.translation.height, 2))
-                guard totalDistance > 10 else { return } // 忽略过小的移动
-                
-                print("⚠️ 拖拽手势检测到变化: dx=\(value.translation.width), dy=\(value.translation.height)")
-                
-                guard let rootEntity = modelData.proteinViewer.getScene() else {
-                    print("❌ 拖拽手势：未能获取场景实体")
-                    return
+                // 根据当前模式执行相应操作
+                if viewModel.isMoving {
+                    // 移动模式 - 灵敏度降低为原来的四分之一
+                    print("⚠️ 拖拽手势检测到变化: dx=\(value.translation.width), dy=\(value.translation.height)")
+                    
+                    guard let rootEntity = modelData.proteinViewer.getScene() else {
+                        print("❌ 拖拽手势：未能获取场景实体")
+                        return
+                    }
+                    
+                    let sensitivity: Float = 0.000125 // 原来是 0.00025
+                    let totalDistance = sqrt(pow(value.translation.width, 2) + pow(value.translation.height, 2))
+                    let nonLinearFactor = Float(min(1.0, totalDistance / 200))
+                    let effectiveSensitivity = sensitivity * nonLinearFactor
+                    
+                    let deltaX = Float(value.translation.width) * effectiveSensitivity
+                    let deltaY = Float(-value.translation.height) * effectiveSensitivity
+                    
+                    let currentPosition = rootEntity.position
+                    rootEntity.position = SIMD3<Float>(
+                        currentPosition.x + deltaX,
+                        currentPosition.y + deltaY,
+                        currentPosition.z
+                    )
+                    
+                    viewModel.lastAction = "正在移动模型"
+                } else if viewModel.isRotating {
+                    // 旋转模式 - 灵敏度降低为原来的四分之一
+                    print("⚠️ 旋转手势检测到变化: dx=\(value.translation.width), dy=\(value.translation.height)")
+                    
+                    guard let rootEntity = modelData.proteinViewer.getScene() else {
+                        print("❌ 旋转手势：未能获取场景实体")
+                        return
+                    }
+                    
+                    let sensitivity: Float = 0.00125 // 原来是 0.0025
+                    let rotationX = Float(-value.translation.height) * sensitivity
+                    let rotationY = Float(-value.translation.width) * sensitivity
+                    
+                    // 创建旋转四元数
+                    let xRotation = simd_quatf(angle: rotationX, axis: SIMD3<Float>(1, 0, 0))
+                    let yRotation = simd_quatf(angle: rotationY, axis: SIMD3<Float>(0, 1, 0))
+                    
+                    // 组合旋转
+                    let combinedRotation = yRotation * xRotation
+                    
+                    // 应用旋转
+                    rootEntity.orientation = combinedRotation * rootEntity.orientation
+                    
+                    viewModel.lastAction = "正在旋转模型"
+                } else if viewModel.isScaling {
+                    // 缩放模式 - 灵敏度降低为原来的四分之一
+                    print("⚠️ 缩放手势检测到变化: dy=\(value.translation.height)")
+                    
+                    guard let rootEntity = modelData.proteinViewer.getScene() else {
+                        print("❌ 缩放手势：未能获取场景实体")
+                        return
+                    }
+                    
+                    let sensitivity: Float = 0.00125 // 原来是 0.0025
+                    let scaleDelta = Float(-value.translation.height) * sensitivity
+                    let currentScale = rootEntity.scale.x
+                    let newScale = currentScale * (1 + scaleDelta)
+                    
+                    // 限制缩放范围
+                    let minScale: Float = 0.1
+                    let maxScale: Float = 5.0
+                    let clampedScale = min(max(newScale, minScale), maxScale)
+                    
+                    // 应用缩放 - 保持中心点不变
+                    rootEntity.scale = SIMD3<Float>(repeating: clampedScale)
+                    
+                    viewModel.lastAction = "正在缩放模型 [比例: \(String(format: "%.1f", clampedScale))x]"
                 }
-                
-                // 极大降低灵敏度，提高控制性
-                let sensitivity: Float = 0.0005 // 极低敏感度
-                
-                // 应用非线性变换，小移动时敏感度更低
-                let nonLinearFactor = Float(min(1.0, totalDistance / 200))
-                let effectiveSensitivity = sensitivity * nonLinearFactor
-                
-                let deltaX = Float(value.translation.width) * effectiveSensitivity
-                let deltaY = Float(-value.translation.height) * effectiveSensitivity
-                
-                // 获取当前位置并应用偏移
-                let currentPosition = rootEntity.position
-                rootEntity.position = SIMD3<Float>(
-                    currentPosition.x + deltaX,
-                    currentPosition.y + deltaY,
-                    currentPosition.z
-                )
-                
-                // 添加实时反馈信息
-                viewModel.lastAction = "正在移动模型"
             }
             .onEnded { _ in
                 if viewModel.isMoving {
-                    // 操作结束时更新状态
                     viewModel.lastAction = "移动操作已完成"
+                } else if viewModel.isRotating {
+                    viewModel.lastAction = "旋转操作已完成"
+                } else if viewModel.isScaling {
+                    viewModel.lastAction = "缩放操作已完成"
                 }
             }
     }
@@ -714,40 +744,9 @@ struct ProteinModelView: View {
             }
     }
     
-    // 缩放手势
-    private func magnificationGesture(modelData: ProteinModelData) -> some Gesture {
-        MagnificationGesture()
-            .onChanged { value in
-                // 只有在缩放模式下才处理缩放
-                guard viewModel.isScaling else { return }
-                
-                print("⚠️ 缩放手势检测到变化，比例: \(value.magnitude)")
-                
-                guard let rootEntity = modelData.proteinViewer.getScene() else {
-                    print("❌ 缩放手势：未能获取场景实体")
-                    return
-                }
-                
-                // 计算更灵敏的缩放因子
-                let scaleFactor = Float(value.magnitude * 1.5)
-                let currentScale = rootEntity.scale
-                
-                // 直接设置缩放值
-                rootEntity.scale = SIMD3<Float>(
-                    scaleFactor,
-                    scaleFactor,
-                    scaleFactor
-                )
-                
-                // 添加实时反馈信息
-                viewModel.lastAction = "正在缩放模型 [比例: \(String(format: "%.1f", scaleFactor))x]"
-            }
-            .onEnded { _ in
-                if viewModel.isScaling {
-                    // 操作结束时更新状态
-                    viewModel.lastAction = "缩放操作已完成"
-                }
-            }
+    // 组合所有手势
+    private func modelGestures(modelData: ProteinModelData) -> some Gesture {
+        dragGesture(modelData: modelData)
     }
     
     // MARK: - 辅助方法
@@ -779,34 +778,23 @@ struct ProteinModelView: View {
     
     // 处理原子点击
     private func handleAtomTap(at index: Int) {
-        print("处理原子点击，索引: \(index)")
+        print("处理原子点击事件: \(index)")
         
-        if appModel.isMeasuring {
-            print("测量模式：添加测量点")
-            appModel.addMeasurementPoint(at: index)
-            print("已添加测量点，索引: \(index)，当前测量点数: \(appModel.measurementDistance != nil ? "2" : "1")")
-        } else if viewModel.isChangingColor {
-            print("颜色修改模式：选择原子")
-            
-            // 先清除之前选中的原子，确保界面状态正确更新
-            appModel.selectedAtomIndex = nil
-            
-            // 选择原子
-            appModel.selectAtom(at: index)
-            
-            // 只有当已经选择了颜色时，才应用颜色
+        // 如果在颜色修改模式下
+        if viewModel.isChangingColor {
+            // 检查是否已经选择了颜色
             if let selectedColor = viewModel.selectedColor {
+                // 如果已经选择了颜色，直接应用到点击的原子
                 print("已选择颜色，应用到原子: \(index)")
                 applyColorToAtom(at: index, color: selectedColor)
                 viewModel.lastAction = "已将颜色应用到原子 \(index)"
             } else {
                 // 如果还没有选择颜色，提示用户选择颜色
-                viewModel.lastAction = "已选中原子 \(index)，请先选择要应用的颜色"
+                viewModel.lastAction = "请先从颜色面板中选择一个颜色"
             }
         } else {
-            // 普通模式：仅显示原子信息，不选择原子，也不改变颜色
+            // 普通模式：仅显示原子信息
             print("普通模式：显示原子信息")
-            // 不再调用selectAtom，仅显示信息
             viewModel.lastAction = "原子 \(index) 信息：点击颜色修改按钮可修改颜色"
         }
     }
@@ -847,30 +835,15 @@ struct ProteinModelView: View {
         generator.impactOccurred()
         #endif
         
-        // 使用更生动的动画切换颜色
-        withAnimation(.spring(response: 0.2, dampingFraction: 0.7)) {
-            // 先判断是否为同一颜色，如果是则取消选择
-            if viewModel.selectedColor == color {
-                viewModel.selectedColor = nil
-                print("🎨 取消选择颜色")
-            } else {
-                viewModel.selectedColor = color
-                print("🎨 选择新颜色: \(color)")
-            }
-        }
+        // 直接设置新颜色
+        viewModel.selectedColor = color
+        print("🎨 选择新颜色: \(color)")
         
-        // 强制刷新UI，确保选中状态立即更新
+        // 更新提示信息
+        viewModel.lastAction = "已选择颜色，请点击要改变颜色的原子"
+        
+        // 强制刷新UI
         viewModel.objectWillChange.send()
-        
-        // 如果之前已经选中了原子，提示用户点击原子应用颜色
-        if appModel.selectedAtomIndex != nil {
-            viewModel.lastAction = "已选择颜色，点击原子应用此颜色"
-        } else {
-            viewModel.lastAction = "已选择颜色，点击需要改变颜色的原子"
-        }
-        
-        // 不再自动应用颜色到之前选中的原子
-        // 要求用户必须明确点击原子来应用颜色
     }
     
     // 将颜色应用到指定的原子
@@ -929,13 +902,13 @@ extension ProteinViewer.DisplayMode: CaseIterable {
     var displayName: String {
         switch self {
         case .ballAndStick:
-            return "球棍模型"
+            return "Ball and Stick"
         case .spaceFilling:
-            return "空间填充"
+            return "Space Filling"
         case .proteinRibbon:
-            return "飘带模型"
+            return "Ribbon"
         case .proteinSurface:
-            return "表面模型"
+            return "Surface"
         }
     }
 }
@@ -1022,111 +995,7 @@ struct ModelControlButton: View {
     }
 }
 
-// 视图模型 - 控制状态
-class ProteinViewModel: ObservableObject {
-    @Published var isRotating: Bool = false
-    @Published var isMoving: Bool = false
-    @Published var isScaling: Bool = false
-    @Published var isModelLoaded: Bool = false
-    @Published var isChangingColor: Bool = false
-    @Published var lastAction: String = ""
-    @Published var selectedColor: Color? = nil {
-        didSet {
-            // 当颜色变化时立即通知UI更新
-            if selectedColor != oldValue {
-                print("选中颜色已更改: \(String(describing: oldValue)) -> \(String(describing: selectedColor))")
-                DispatchQueue.main.async {
-                    self.objectWillChange.send()
-                }
-            }
-        }
-    }
-    
-    func toggleRotation() {
-        print("🔄 切换旋转模式: 从\(isRotating)到\(!isRotating)")
-        isRotating.toggle()
-        if isRotating {
-            lastAction = "旋转模式已激活，可使用旋转手势调整模型角度"
-            isMoving = false
-            isScaling = false
-            isChangingColor = false
-        } else {
-            lastAction = "旋转模式已关闭"
-        }
-    }
-    
-    func toggleMoving() {
-        print("🔄 切换移动模式: 从\(isMoving)到\(!isMoving)")
-        isMoving.toggle()
-        if isMoving {
-            lastAction = "移动模式已激活，可使用拖拽手势调整模型位置"
-            isRotating = false
-            isScaling = false
-            isChangingColor = false
-        } else {
-            lastAction = "移动模式已关闭"
-        }
-    }
-    
-    func toggleScaling() {
-        print("🔄 切换缩放模式: 从\(isScaling)到\(!isScaling)")
-        isScaling.toggle()
-        if isScaling {
-            lastAction = "缩放模式已激活，可使用捏合手势调整模型大小"
-            isRotating = false
-            isMoving = false
-            isChangingColor = false
-        } else {
-            lastAction = "缩放模式已关闭"
-        }
-    }
-    
-    func toggleColorChange() {
-        print("🔄 切换颜色修改模式: 从\(isChangingColor)到\(!isChangingColor)")
-        
-        // 播放触觉反馈
-        #if os(iOS)
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
-        #endif
-        
-        // 使用更生动的动画效果
-        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-        isChangingColor.toggle()
-        }
-        
-        // 强制UI立即更新
-        objectWillChange.send()
-        
-        if isChangingColor {
-            print("🎨 已进入颜色修改模式，等待用户选择颜色")
-            lastAction = "颜色修改模式已激活，请选择一个颜色，然后点击原子应用此颜色"
-            // 关闭其他模式
-            isRotating = false
-            isMoving = false
-            isScaling = false
-        } else {
-            print("🎨 已退出颜色修改模式")
-            lastAction = "颜色修改模式已关闭"
-            // 退出颜色修改模式时清除选择的颜色
-            DispatchQueue.main.async {
-                self.selectedColor = nil
-                self.objectWillChange.send()
-                print("💧 清除已选颜色")
-            }
-        }
-    }
-    
-    // 重置所有操作状态
-    func resetAllModes() {
-        print("🔄 重置所有模式")
-        isRotating = false
-        isMoving = false
-        isScaling = false
-        isChangingColor = false
-        lastAction = "所有操作模式已重置"
-    }
-}
+
 
 // 颜色选择按钮
 struct ColorButton: View {
@@ -1260,13 +1129,16 @@ struct ColorButton: View {
 }
 
 #Preview {
-    // 创建一个临时的UUID和AppModel用于预览
+    previewProteinModelView()
+}
+
+@MainActor
+private func previewProteinModelView() -> some View {
     let previewModelID = UUID()
     let appModel = AppModel()
     let previewViewer = ProteinViewer()
-    let modelData = ProteinModelData(id: previewModelID, proteinViewer: previewViewer)
+    let modelData = ProteinModelData(proteinViewer: previewViewer)
     appModel.proteinModels[previewModelID] = modelData
-    
     return ProteinModelView(modelID: previewModelID)
         .environmentObject(appModel)
 }

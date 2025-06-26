@@ -292,7 +292,7 @@ class ProteinViewer: ObservableObject {
         
         // 对每个原子材质重新应用默认设置，确保一切恢复正常
         for (index, atomData) in atomsData.enumerated() {
-            if let atomEntity = atomEntityMap[index] as? ModelEntity {
+            if let atomEntity = atomEntityMap[index] {
                 // 获取原子元素
                 let element = atomData.element.uppercased()
                 
@@ -342,6 +342,19 @@ class ProteinViewer: ObservableObject {
                     atomsEntity.position = [0, 0, 0]    // 重置原子位置
                 }
             }
+            
+            // 检查是否在模拟器环境中
+            #if targetEnvironment(simulator)
+            // 模拟器环境不需要安全作用域访问权限
+            #else
+            // 真机环境需要申请安全作用域访问权限
+            guard url.startAccessingSecurityScopedResource() else {
+                throw NSError(domain: "ProteinViewer", code: -1, userInfo: [NSLocalizedDescriptionKey: "无法访问文件：权限被拒绝"])
+            }
+            defer {
+                url.stopAccessingSecurityScopedResource()
+            }
+            #endif
             
             // 解析PDB文件
             let pdbData = try String(contentsOf: url, encoding: .utf8)
@@ -589,7 +602,6 @@ class ProteinViewer: ObservableObject {
                 radius = Constants.atomRadii[element] ?? 0.25  // 使用常量中定义的半径
                 
                 // 使用较高的细分度来提高球体质量
-                let subdivision = lowQualityMode ? 8 : 12  // 增加细分度
                 meshResources[element] = .generateSphere(radius: radius)
             }
             
@@ -605,7 +617,7 @@ class ProteinViewer: ObservableObject {
                 var material = SimpleMaterial()
                 
                 // 使用常量中的颜色
-                var colorRGBA = Constants.atomColors[element] ?? SIMD4<Float>(0.8, 0.2, 0.8, 1.0) // 默认紫色
+                let colorRGBA = Constants.atomColors[element] ?? SIMD4<Float>(0.8, 0.2, 0.8, 1.0) // 默认紫色
                 
                 material.color = .init(tint: UIColor(red: CGFloat(colorRGBA.x),
                                                      green: CGFloat(colorRGBA.y),
@@ -1556,7 +1568,7 @@ class ProteinViewer: ObservableObject {
         print("==== 添加测量点 ==== : 索引=\(atomIndex)，当前测量点数=\(measurementPoints.count)")
         
         // 验证原子是否存在
-        guard let atom = atomEntityMap[atomIndex] else {
+        if !atomEntityMap.keys.contains(atomIndex) {
             print("错误：无法找到索引为\(atomIndex)的原子实体")
             return
         }
@@ -1572,7 +1584,7 @@ class ProteinViewer: ObservableObject {
         print("添加测量点成功，当前测量点列表：\(measurementPoints)")
         
         // 应用特殊高亮颜色
-        if let atomEntity = atomEntityMap[atomIndex] as? ModelEntity {
+        if let atomEntity = atomEntityMap[atomIndex] {
             // 应用鲜明的蓝色高亮
             let highlightMaterial = SimpleMaterial(
                 color: .cyan,
@@ -1801,10 +1813,10 @@ class ProteinViewer: ObservableObject {
         let direction = normalize(end - start)
         let distance = length(end - start)
         
-        // 使用更粗的线条 - 增加线条半径
+        // 使用更粗的线条
         let lineRadius = Constants.measurementLineRadius * 2.0
         
-        // 创建主线条 - 使用鲜明的红色
+        // 创建主线条 - 使用鲜明的颜色
         let line = ModelEntity(mesh: .generateCylinder(height: distance, radius: lineRadius))
         line.position = midpoint
         
@@ -1817,27 +1829,32 @@ class ProteinViewer: ObservableObject {
             line.orientation = simd_quatf(angle: rotationAngle, axis: normalize(rotationAxis))
         }
         
-        // 设置红色材质，更加鲜明
-        var material = SimpleMaterial()
-        material.color = .init(tint: .red)
-        material.roughness = .init(floatLiteral: 0.1)
-        material.metallic = .init(floatLiteral: 0.5)
+        // 设置发光材质
+        let material = SimpleMaterial(
+            color: .systemBlue,
+            roughness: 0.1,
+            isMetallic: true
+        )
         line.model?.materials = [material]
         
-        // 在两端添加小球体，增强视觉效果
-        let endpointRadius = lineRadius * 1.5
+        // 在两端添加球体标记
+        let endpointRadius = lineRadius * 2.0
         
-        // 起点球体
         let startSphere = ModelEntity(mesh: .generateSphere(radius: endpointRadius))
         startSphere.position = start
         startSphere.model?.materials = [material]
         
-        // 终点球体
         let endSphere = ModelEntity(mesh: .generateSphere(radius: endpointRadius))
         endSphere.position = end
         endSphere.model?.materials = [material]
         
-        // 添加所有视觉元素
+        // 清除现有测量线
+        for existingLine in measurementLines {
+            existingLine.removeFromParent()
+        }
+        measurementLines.removeAll()
+        
+        // 添加新的测量线元素
         measurementLines.append(line)
         measurementLines.append(startSphere)
         measurementLines.append(endSphere)
@@ -1846,16 +1863,7 @@ class ProteinViewer: ObservableObject {
         rootEntity?.addChild(startSphere)
         rootEntity?.addChild(endSphere)
         
-        // 创建中点标记 - 可选
-        if distance > 0.5 {
-            let midSphere = ModelEntity(mesh: .generateSphere(radius: endpointRadius * 0.7))
-            midSphere.position = midpoint
-            midSphere.model?.materials = [material]
-            measurementLines.append(midSphere)
-            rootEntity?.addChild(midSphere)
-        }
-        
-        print("创建测量线，连接原子 \(measurementPoints[0]) 和 \(measurementPoints[1])，距离: \(distance)")
+        print("创建测量线完成，连接原子 \(measurementPoints[0]) 和 \(measurementPoints[1])，距离: \(distance)Å")
     }
     
     // 原子选择相关函数
@@ -2344,7 +2352,9 @@ class ProteinViewer: ObservableObject {
         uniformsArray.uniforms[0].modelViewMatrix = viewMatrix * modelMatrix
         
         // 为着色器设置统一变量
-        renderEncoder.setVertexBytes(&uniformsArray, length: MemoryLayout<ShaderTypes.UniformsArray>.size, index: ShaderTypes.BufferIndex.uniforms.rawValue)
+        withUnsafePointer(to: uniformsArray) { pointer in
+            renderEncoder.setVertexBytes(pointer, length: MemoryLayout<ShaderTypes.UniformsArray>.size, index: ShaderTypes.BufferIndex.uniforms.rawValue)
+        }
         
         // TODO: 绘制几何体
         // 例如: renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount)
@@ -2476,7 +2486,7 @@ class ProteinViewer: ObservableObject {
                 var material = SimpleMaterial()
                 
                 // 获取基础颜色
-                var baseColor = Constants.atomColors[element] ?? SIMD4<Float>(0.8, 0.2, 0.8, 1.0)
+                let baseColor = Constants.atomColors[element] ?? SIMD4<Float>(0.8, 0.2, 0.8, 1.0)
                 
                 // 增强颜色
                 var enhancedColor = baseColor
@@ -3755,17 +3765,56 @@ class ProteinViewer: ObservableObject {
         }
         
         // 确保模型Z轴位置在合理范围内（不要太远或太近）
-        let minZ: Float = -5.0
-        let maxZ: Float = -0.1
+        let minZ: Float = -2.0
+        let maxZ: Float = -0.5
         
         if rootEntity.position.z < minZ || rootEntity.position.z > maxZ {
             rootEntity.position.z = max(minZ, min(maxZ, rootEntity.position.z))
         }
         
-        // 限制XY位置，防止模型完全离开视野
-        let boundaryLimit: Float = 3.0 * currentScale
-        rootEntity.position.x = max(-boundaryLimit, min(boundaryLimit, rootEntity.position.x))
-        rootEntity.position.y = max(-boundaryLimit, min(boundaryLimit, rootEntity.position.y))
+        // 计算模型的实际边界
+        var minBounds = SIMD3<Float>(repeating: Float.greatestFiniteMagnitude)
+        var maxBounds = SIMD3<Float>(repeating: -Float.greatestFiniteMagnitude)
+        
+        for atom in atomsData {
+            let position = atom.position
+            let element = atom.element
+            let radius = (Constants.atomRadii[element] ?? 0.04) * 1.2
+            
+            let atomMin = position - SIMD3<Float>(radius, radius, radius)
+            let atomMax = position + SIMD3<Float>(radius, radius, radius)
+            
+            minBounds = min(minBounds, atomMin)
+            maxBounds = max(maxBounds, atomMax)
+        }
+        
+        // 计算模型中心点
+        let center = (minBounds + maxBounds) * 0.5
+        
+        // 计算模型尺寸
+        let size = maxBounds - minBounds
+        let maxDimension = max(max(size.x, size.y), size.z)
+        
+        // 根据模型大小动态调整边界限制
+        let boundaryFactor: Float = 1.2 // 边界因子，确保模型不会太靠近边缘
+        let boundaryLimit = maxDimension * boundaryFactor * currentScale
+        
+        // 限制XY位置，确保模型始终在视野内
+        let minX = -boundaryLimit
+        let maxX = boundaryLimit
+        let minY = -boundaryLimit
+        let maxY = boundaryLimit
+        
+        // 应用位置约束
+        rootEntity.position.x = max(minX, min(maxX, rootEntity.position.x))
+        rootEntity.position.y = max(minY, min(maxY, rootEntity.position.y))
+        
+        // 如果模型完全超出边界，将其拉回中心
+        if abs(rootEntity.position.x) > boundaryLimit * 1.5 || 
+           abs(rootEntity.position.y) > boundaryLimit * 1.5 {
+            rootEntity.position.x = 0
+            rootEntity.position.y = 0
+        }
     }
     
     @MainActor
